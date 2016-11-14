@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
+    <link rel="stylesheet" href="styles.css"/>
     <title>The AJAXson 5</title>
     <script src="https://code.jquery.com/jquery-latest.min.js"></script>
     <script type="text/javascript" src="request-gif.js"></script>
@@ -10,7 +11,15 @@
 
     <form id="form-gif-request" />
         <label>What kind of Jackson 5 related gif do you want?</label>
-        <input name="tag" type="text"/>
+        <input id="tag" type="text"/>
+	<p>
+ 	  <label>Prove you are not a robot by answering this riddle:</label>
+	  <br/>
+          <input id="riddle" type="text"/>
+	  <label> <b>Jacksons are better than 1.</b></label>
+	  <br/>
+	  <label id="feedback-error" hidden="false">No gifs for you.</label>
+	</p>
         <input type="submit" value="Get my Gif!" />
     </form>
 

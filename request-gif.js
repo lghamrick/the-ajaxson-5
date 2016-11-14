@@ -17,19 +17,34 @@ function fetchAndDisplayGif(event) {
     // This prevents the form submission from doing what it normally does: send a request (which would cause our page to refresh).
     // Because we will be making our own AJAX request, we dont need to send a normal request and we definitely don't want the page to refresh.
     event.preventDefault();
-    
+
+    // Clear any red messages from previous submit
+    $("#riddle").attr("class", "");    
+
     // get the user's input text from the DOM
-    var searchQuery = ""; // TODO should be e.g. "dance"
+    var searchQuery = $("#tag").val(); // TODO should be e.g. "dance"
+    var answer = $('#riddle').val();
+
+    // Determine if the riddle was answered correctly
+    if (answer != '5') {
+	var msg = "No gifs for you!";
+	$("#riddle").attr("class", "input-invalid");
+	$("#feedback-error").attr("hidden", "false");
+	$("#feedback-error").text("No gifs for you!");
+	$("#feedback").text("");
+	setGifLoadedStatus(false);
+	return false;
+    }
 
     // configure a few parameters to attach to our request
     var params = { 
         api_key: "dc6zaTOxFJmzC", 
-        tag : "" // TODO should be e.g. "jackson 5 dance"
+        tag : "jackson 5 " + searchQuery // TODO should be e.g. "jackson 5 dance"
     };
     
     // make an ajax request for a random GIF
     $.ajax({
-        url: "", // TODO where should this request be sent?
+        url: "https://api.giphy.com/v1/gifs/random", // TODO where should this request be sent?
         data: params, // attach those extra parameters onto the request
         success: function(response) {
             // if the response comes back successfully, the code in here will execute.
@@ -41,6 +56,12 @@ function fetchAndDisplayGif(event) {
             // TODO
             // 1. set the source attribute of our image to the image_url of the GIF
             // 2. hide the feedback message and display the image
+//	    $('#gif').src = response.image_url;
+ 
+// $('#gif').src = "http://media3.giphy.com/media/119pXp1Vx11d4I/giphy.gif";
+// $('#gif').attr('src', "http://media3.giphy.com/media/119pXp1Vx11d4I/giphy.gif");
+$('#gif').attr('src', response["data"]["image_url"]);
+            setGifLoadedStatus(true);
         },
         error: function() {
             // if something went wrong, the code in here will execute instead of the success function
@@ -53,7 +74,8 @@ function fetchAndDisplayGif(event) {
     
     // TODO
     // give the user a "Loading..." message while they wait
-    
+    $("#feedback").text("Loading...");
+    setGifLoadedStatus(false);
 }
 
 
